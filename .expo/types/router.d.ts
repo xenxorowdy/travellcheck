@@ -4,8 +4,8 @@ import type { TextProps, GestureResponderEvent } from 'react-native';
 
 export namespace ExpoRouter {
   type StaticRoutes = `/` | `/(tabs)` | `/_sitemap` | `/explore`;
-  type DynamicRoutes<T extends string> = never;
-  type DynamicRouteTemplate = never;
+  type DynamicRoutes<T extends string> = `/city/${SingleRoutePart<T>}` | `/exibt/${SingleRoutePart<T>}` | `/place/${SingleRoutePart<T>}`;
+  type DynamicRouteTemplate = `/city/[city]` | `/exibt/[title]` | `/place/[id]`;
 
   export type RelativePathString = `./${string}` | `../${string}` | '..';
   export type AbsoluteRoute = DynamicRouteTemplate | StaticRoutes;

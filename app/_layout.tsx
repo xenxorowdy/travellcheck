@@ -30,8 +30,51 @@ export default function RootLayout() {
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="city/[city]"
+        options={({ route, params }) => ({
+          headerTitle: "city",
+          headerStyle: { backgroundColor: '#24AEFA' },
+          headerTintColor: '#fff',
+          headerTitleAlign: 'center',
+          headerTitleStyle: {
+            fontWeight: "700",
+            backgroundColor: '#24AEFA',
+          },
+
+        })}
+   />
+      <Stack.Screen
+        name="place/[id]"
+        options={{
+          headerTitle: "place",
+          headerTitleAlign: 'center',
+          headerStyle: { backgroundColor: '#24AEFA' },
+
+        }}
+
+      />
+      <Stack.Screen
+        name="exibt/[title]"
+        options={{
+          headerTitle: "Exbit",
+          headerStyle: { backgroundColor: '#24AEFA' },
+
+        }}
+      />
+      <Stack.Screen
+        name="series/[id]"
+        options={{
+          headerTitle: "series Information",
+          headerTitleAlign: 'center',
+          headerStyle: { backgroundColor: '#24AEFA' },
+
+        }}
+      />
         <Stack.Screen name="+not-found" />
       </Stack>
     </ThemeProvider>
   );
 }
+
+
