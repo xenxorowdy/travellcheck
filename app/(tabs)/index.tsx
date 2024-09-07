@@ -4,7 +4,7 @@ import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { openapi, weatherApiKey } from '@/utils';
+import { cities, openapi, weatherApiKey } from '@/utils';
 import * as Location from 'expo-location';
 import { Redirect, router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
@@ -15,7 +15,6 @@ interface LocationObject {
   temp: number;
   icon: string;
 }
-
 
 const cuppons =   ["ALKIDoQ","H6C6Pp2","oQi9Y14","WXNjRZP","AhwAZxH"]
 
@@ -45,14 +44,16 @@ export default function HomeScreen() {
 
       const res = await fetch(`https://api.locationiq.com/v1/reverse.php?key=pk.bb9563dbec37f95deae150d32658e7ab&lat=${lat}&lon=${lng}&format=json`);
       const data = await res.json();
-      const {city , neighbourhood ,country_code} = data.address
-      setCity(city || neighbourhood + ', ' + country_code.toUpperCase());
+
+      const {city , neighbourhood,village ,country_code} = data.address
+      setCity((city || neighbourhood || village|| '') + ', ' + country_code.toUpperCase());
 
       const query = `?q=${lat},${lng}&key=${weatherApiKey}`;
       const weatherUrl = openapi + query;
       const weatherres = await fetch(weatherUrl)
       const weatherdata = await weatherres.json();
       const wea = weatherdata.current;
+      console.log(wea.condition.text);
       setWeather({
         temp: wea.temp_c,
         icon: wea.condition.text
@@ -86,6 +87,8 @@ export default function HomeScreen() {
               return 'thunderstorm';
         case 'Drizzle':
               return 'rainy';
+            case 'Light rain shower':
+              return 'rainy';
         case 'Clear':
               return 'moon-sharp';
         
@@ -115,7 +118,7 @@ export default function HomeScreen() {
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}>
-      <ThemedView style={{padding:16,gap:16}}>
+      <ThemedView style={{padding:16,gap:10}}>
         <ThemedView style={styles.titleContainer}>
           <ThemedText type="weather">{city}</ThemedText>
           <ThemedView style={styles.weather} >
@@ -124,12 +127,7 @@ export default function HomeScreen() {
             <TabBarIcon name={getIconName(weather?.icon)} color={'orange'} size={20}/>
           </ThemedView>
           </ThemedView>
-      <Searchbar
-        theme={{ roundness: 3}}
-      placeholder="Search city"
-      onChangeText={setSearchQuery}
-      value={searchQuery}
-        />
+ 
         {!cuppon?
         <Button mode="contained-tonal" style={styles.button} onPress={()=>setcuppon(!cuppon)} >Enter coupon code</Button>
           :
@@ -143,8 +141,14 @@ export default function HomeScreen() {
         </ThemedView>
         }
         <ThemedText type="error" >{warning}</ThemedText>
+             <Searchbar
+        theme={{ roundness: 3}}
+      placeholder="Search city"
+      onChangeText={setSearchQuery}
+      value={searchQuery}
+        />
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="subtitle">Popular tours</ThemedText>
+        <ThemedText type="subtitle">Popular Cities</ThemedText>
         <TouchableOpacity activeOpacity={0.5}>
         <ThemedText type='weather' >See All</ThemedText>
         </TouchableOpacity>
@@ -155,18 +159,18 @@ export default function HomeScreen() {
           showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ flexGrow: 1,paddingLeft:16 }}>
         <FlatList
-          data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
-          keyExtractor={(item) => item.toString()}
+          data={cities.filter(city=>city.name?.toLowerCase().includes(searchQuery.toLowerCase()))}
+          keyExtractor={(item) => item.name.toString()}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           style={{ flex: 1, }}
           renderItem={({ item }) => (
-            <TouchableOpacity activeOpacity={0.75} onPress={() =>  router.push(`city/1`)} style={styles.courosual} >
+            <TouchableOpacity activeOpacity={0.75} onPress={() =>  router.push(`city/${item.name}`)} style={styles.courosual} >
               <Image
-                source={require('@/assets/images/taj.jpg')}
+                source={{uri: item.image_url}}
                 style={{ width: 200, height: 300, objectFit:"fill",  borderRadius:18, backgroundColor: 'black', }}
               />
-              <ThemedText type="weather" style={styles.imageRelativeText} >Agra</ThemedText>
+              <ThemedText type="weather" style={styles.imageRelativeText} >{item.name}</ThemedText>
             </TouchableOpacity>
           )}
         />

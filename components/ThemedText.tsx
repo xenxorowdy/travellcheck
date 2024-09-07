@@ -5,7 +5,7 @@ import { useThemeColor } from '@/hooks/useThemeColor';
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
   darkColor?: string;
-  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link'| 'weather'|'error';
+  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link'| 'weather'|'error'|'catlogTitle';
 };
 
 export function ThemedText({
@@ -23,6 +23,7 @@ export function ThemedText({
         { color },
         type === 'default' ? styles.default : undefined,
         type === 'title' ? styles.title : undefined,
+        type === 'catlogTitle' ? styles.catlogTitle : undefined,
         type === 'defaultSemiBold' ? styles.defaultSemiBold : undefined,
         type === 'subtitle' ? styles.subtitle : undefined,
         type === 'link' ? styles.link : undefined,
@@ -41,7 +42,7 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
   defaultSemiBold: {
-    fontSize: 16,
+    fontSize: 14,
     lineHeight: 24,
     fontWeight: '600',
   },
@@ -69,6 +70,10 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: "#FF9494",
     // Color / FF9494
+  },
+  catlogTitle: {
+    fontSize: 16,
+    fontWeight:'500'
   }
   
 });

@@ -33,13 +33,12 @@ export default function RootLayout() {
       <Stack.Screen
         name="city/[city]"
         options={({ route, params }) => ({
-          headerTitle: "city",
-          headerStyle: { backgroundColor: '#24AEFA' },
+          headerTitle: decodeURIComponent(route.params?.city),
           headerTintColor: '#fff',
           headerTitleAlign: 'center',
           headerTitleStyle: {
             fontWeight: "700",
-            backgroundColor: '#24AEFA',
+            backgroundColor: '#494c7d',
           },
 
         })}
@@ -47,28 +46,25 @@ export default function RootLayout() {
       <Stack.Screen
         name="place/[id]"
         options={{
-          headerTitle: "place",
+          headerTitle: "National Museum Delhi",
           headerTitleAlign: 'center',
-          headerStyle: { backgroundColor: '#24AEFA' },
 
         }}
 
       />
-      <Stack.Screen
-        name="exibt/[title]"
-        options={{
-          headerTitle: "Exbit",
-          headerStyle: { backgroundColor: '#24AEFA' },
+        <Stack.Screen
+          name="exibt/[title]"
+          options={({ route, params }) => ({
+            headerTitle: decodeURIComponent(route.params?.title),
 
-        }}
+          })
+        }
       />
       <Stack.Screen
         name="series/[id]"
         options={{
           headerTitle: "series Information",
           headerTitleAlign: 'center',
-          headerStyle: { backgroundColor: '#24AEFA' },
-
         }}
       />
         <Stack.Screen name="+not-found" />

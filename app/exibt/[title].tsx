@@ -10,11 +10,16 @@ import { Image } from 'expo-image'
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import * as Speech from 'expo-speech';
+import { Select } from 'native-base';
+import Dropdown from '@/components/Dropdown';
+import Animated from 'react-native-reanimated';
 interface catlo  {
      title: String;
     description: {
-        english: String;
-        hindi: String;
+        en: String;
+      hi: String;
+      es: String;
+      fr: String;
     };
     url: String;
     highlights: String[];
@@ -25,8 +30,8 @@ interface catlo  {
 const Exibit = () => {
     const { title  } = useLocalSearchParams();
     const [catlog, setCatlog] = useState<catlo | null>();
-    const [lan, setLan] = useState<'english' | 'hindi'>('english');
-    const [isSpeaking,setIsSpeaking] = useState();
+    const [lan, setLan] = useState<String>('en');
+    const [isSpeaking,setIsSpeaking] = useState(false);
     console.log(title, exibit)
     
     useEffect(() => {
@@ -35,20 +40,14 @@ const Exibit = () => {
 
     }, [])
 
-    const handleChange = () => {
-        if (lan === 'english') {
-            setLan("hindi")
-        } else {
-            setLan("english");
-        }
-    }
+console.log(lan)
 
  const startSpeaking = () => {
     setIsSpeaking(true);
      Speech.speak(catlog?.description?.[lan], {
-         language: lan ==='english' ? "en" : "hi",
+         language: lan,
          _voiceIndex: 3,
-         pitch: 1.4,
+         pitch: 1.2,
          quality: "Enhanced",
       onDone: () => setIsSpeaking(false),
     });
@@ -59,30 +58,30 @@ const Exibit = () => {
     setIsSpeaking(false);
   };
     return (
-        <ParallaxScrollView>
+     <Animated.ScrollView
+
+            horizontal={false}
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ flexGrow: 1, gap: 10 }}
+            >
        <ThemedView>
-          <ThemedText type="subtitle" >{catlog?.title}</ThemedText>
-                <Image source={{ uri: catlog?.url }} style={{ width: "100%", height: 400, objectFit: 'scale-down', resizeMode: 'stretch', borderRadius: 18 }} />
-                <ThemedView style={{flexDirection:"row"}} >
-             <TouchableOpacity
-          style={[styles.button, lan === 'english' && styles.activeButton]}
-          onPress={handleChange}
-        >
-          <ThemedText style={[styles.buttonText, lan === 'english' && styles.activeButtonText]}>english</ThemedText>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.button, lan === 'hindi' && styles.activeButton]}
-          onPress={handleChange}
-        >
-          <ThemedText style={[styles.buttonText, lan === 'hindi' && styles.activeButtonText]}>hindi</ThemedText>
-        </TouchableOpacity>
-                </ThemedView>
-            <TouchableOpacity onPress={isSpeaking ? stopSpeaking : startSpeaking} style={{margin:20}}>
+
+          <Image source={{ uri: catlog?.url }} style={{ width: "100%", height: 300, objectFit: 'scale-down', resizeMode: 'stretch' }} />
+        </ThemedView>
+        <ThemedView style={{height:100 ,flexDirection:"row",alignItems:"center",alignContent:"center",margin:1}}>
+          <ThemedView>
+          <TouchableOpacity onPress={isSpeaking ? stopSpeaking : startSpeaking} style={{ margin: 20 }}>
                 <TabBarIcon name={isSpeaking ? 'pause' : 'play'} color={"orange"}  size={30}/>
       </TouchableOpacity>
-          <ThemedText type="subtitle" > {catlog?.description?.[lan]} </ThemedText>
-    </ThemedView>
-      </ParallaxScrollView>
+          </ThemedView>
+          <Dropdown lan={lan} setLan={setLan} />
+
+        </ThemedView>
+        <ThemedView style={{margin:10}}>
+          <ThemedText  > {catlog?.description?.[lan]} </ThemedText>
+        </ThemedView>
+</Animated.ScrollView>
   )
 }
 

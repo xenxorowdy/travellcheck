@@ -44,8 +44,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     },
     textTheme: {
-    fontSize: 82,
-    lineHeight: 82,
+    fontSize: 40,
+    lineHeight: 42,
   }
 
 });
