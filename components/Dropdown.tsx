@@ -4,8 +4,8 @@ import { Picker } from '@react-native-picker/picker';
 import { ThemedText } from './ThemedText';
 import { ThemedView } from './ThemedView';
 interface app {
-    lan: String;
-    setLan: void
+    lan: "en"| "hi"| "es"| "fr";
+    setLan: React.Dispatch<React.SetStateAction<"en" | "hi" | "es" | "fr">>
 }
 const App :React.FC<app> =  (props) => {
     const { lan, setLan } = props;
@@ -15,8 +15,8 @@ const App :React.FC<app> =  (props) => {
         <Picker
           selectedValue={lan}
           style={{ height: 30, width: 150,borderWidth:1,borderColor:"#CCC",color:"orange" }}
-              mode={"dialog"}
-          onValueChange={setLan}
+          mode={"dialog"}
+          onValueChange={(itemValue: "en" | "hi" | "es" | "fr")=>setLan(itemValue)}
         >
           <Picker.Item style={{color:"orange"}} label="English" value="en" />
           <Picker.Item style={{color:"orange"}} label="español" value="es" />

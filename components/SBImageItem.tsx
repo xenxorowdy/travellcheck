@@ -31,7 +31,7 @@ export const SBImageItem: React.FC<Props> = ({
     uri: `https://picsum.photos/id/${index}/400/300`,
   }).current;
 
-  return (
+  return (  
     <View style={[styles.container, style]}>
       <ActivityIndicator size="small" />
       <Image cachePolicy={'memory-disk'} key={index} style={styles.image} source={img ?? source} />

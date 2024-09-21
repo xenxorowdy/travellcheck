@@ -1,11 +1,10 @@
 import { Text, type TextProps, StyleSheet } from 'react-native';
-
 import { useThemeColor } from '@/hooks/useThemeColor';
 
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
   darkColor?: string;
-  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link'| 'weather'|'error'|'catlogTitle';
+  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link'| 'weather'|'error'|'catlogTitle'| 'details';
 };
 
 export function ThemedText({
@@ -29,6 +28,7 @@ export function ThemedText({
         type === 'link' ? styles.link : undefined,
         type === 'weather' ? styles.weather : undefined,
         type === "error" ? styles.error : undefined,
+        type === "details" ? styles.details : undefined,
         style,
       ]}
       {...rest}
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
   defaultSemiBold: {
-    fontSize: 14,
+    fontSize: 16,
     lineHeight: 24,
     fontWeight: '600',
   },
@@ -74,6 +74,11 @@ const styles = StyleSheet.create({
   catlogTitle: {
     fontSize: 16,
     fontWeight:'500'
+  },
+   details: {
+    fontSize: 16,
+     marginBottom: 3,
+    fontWeight:'300'
   }
   
 });

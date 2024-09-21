@@ -166,7 +166,7 @@ export const  exibit =[
 ];
 
 
- export const  cities = [
+export const  cities = [
     {
       "name": "Paris",
       "image_url": "https://imgs.search.brave.com/KG3vAxMy1US7NMXUcBuQ3tVjaaR8-of6Tyc1JLkRTg8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvNTIx/MDYyOTU4L3Bob3Rv/L2VpZmZlbC10b3dl/ci1mcm9tLXRyb2Nh/ZGVyby1pbi1wYXJp/cy1mcmFuY2UuanBn/P3M9NjEyeDYxMiZ3/PTAmaz0yMCZjPXZq/Y1ptdnY0X0tLd3o0/SUVxMmgzOWJJRmNk/WUlZcTNtNTBKSEpo/a2JWWmc9",
@@ -217,5 +217,4 @@ export const  exibit =[
       "image_url": "https://imgs.search.brave.com/wPIMYZSujcGaYLeYx1Uhp6kINFID9GYaEYJkeRfhiYg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9jZG4u/YnJpdGFubmljYS5j/b20vODQvOTQzODQt/MDUwLUNGNjAwRjM5/L1VORVNDTy1Xb3Js/ZC1IZXJpdGFnZS1D/b21taXR0ZWUtYXJl/YS12aWV3LXN0YXR1/ZS0yMDEyLmpwZz93/PTIwMCZoPTIwMCZj/PWNyb3A",
       "best_travel_place": "Christ the Redeemer"
     }
-  ]
-
+]

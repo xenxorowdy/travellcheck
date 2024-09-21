@@ -13,7 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 const HEADER_HEIGHT = 250;
 
 type Props = PropsWithChildren<{
-  headerImage: undefined | ReactElement;
+  headerImage?: undefined | ReactElement;
   headerBackgroundColor: { dark: string; light: string };
 }>;
 

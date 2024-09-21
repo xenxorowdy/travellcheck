@@ -5,8 +5,10 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 
+import { ThemedView } from '@/components/ThemedView';
+import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { useColorScheme } from '@/hooks/useColorScheme';
-
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
@@ -29,12 +31,19 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
+         <Stack.Screen
+        name="index"
+        
+          options={{
+          headerShown: false,
+          title: '',
+        }}
+      />
       <Stack.Screen
-        name="city/[city]"
+        name="city/[id]/[city]"
         options={({ route, params }) => ({
           headerTitle: decodeURIComponent(route.params?.city),
-          headerTintColor: '#fff',
           headerTitleAlign: 'center',
           headerTitleStyle: {
             fontWeight: "700",
@@ -44,16 +53,16 @@ export default function RootLayout() {
         })}
    />
       <Stack.Screen
-        name="place/[id]"
-        options={{
-          headerTitle: "National Museum Delhi",
+        name="place/[title]/[id]"
+        options={({ route }) => ({
+          headerTitle: "Exibits",
           headerTitleAlign: 'center',
-
-        }}
+        })
+      }
 
       />
         <Stack.Screen
-          name="exibt/[title]"
+          name="exibt/[id]/[title]"
           options={({ route, params }) => ({
             headerTitle: decodeURIComponent(route.params?.title),
 
@@ -61,14 +70,21 @@ export default function RootLayout() {
         }
       />
       <Stack.Screen
-        name="series/[id]"
+        name="monument/[id]/index"
         options={{
-          headerTitle: "series Information",
+          headerTitle: "Monument",
           headerTitleAlign: 'center',
         }}
-      />
+        />
+  
         <Stack.Screen name="+not-found" />
       </Stack>
+      <ThemedView value={colorScheme === 'dark' ? DarkTheme : DefaultTheme} style={{ padding: 30,justifyContent:"space-around",display:"flex",flexDirection:"row" }} >
+        <TabBarIcon name="logo-facebook" color={"#1977F2"} />
+        <TabBarIcon name="logo-instagram" color={"#d62976"} />
+            <TabBarIcon name="logo-linkedin" color={"#0B65C2"} />
+<FontAwesome6 name="x-twitter" size={28} style={{ marginBottom: -3 }} color={colorScheme === 'dark'?"#fff" : "#000"}  />
+      </ThemedView>
     </ThemeProvider>
   );
 }
