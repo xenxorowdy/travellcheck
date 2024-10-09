@@ -1,4 +1,5 @@
 import { fetchGetAPI } from '@/api'
+import ExpandableText from '@/components/Expand'
 import ParallaxScrollView from '@/components/ParallaxScrollView'
 import { ThemedText } from '@/components/ThemedText'
 import { ThemedView } from '@/components/ThemedView'
@@ -6,7 +7,8 @@ import { Image } from 'expo-image'
 import { router, useLocalSearchParams } from 'expo-router'
 import { Divider, FlatList, NativeBaseProvider } from 'native-base'
 import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, ListRenderItem, StyleSheet, TouchableOpacity } from 'react-native'
+import { ActivityIndicator, ImageBackground, ListRenderItem, StyleSheet, TouchableOpacity } from 'react-native'
+import { Button } from 'react-native-paper'
 import Animated, { useAnimatedRef } from 'react-native-reanimated'
 type monument = {
 
@@ -25,19 +27,33 @@ type monument = {
 const City = () => {
   const { id, city } = useLocalSearchParams();
     const scrollRef = useAnimatedRef<Animated.ScrollView>();
-  const [monuments,setMonuments] = useState<monument[]>()
+  const [monuments, setMonuments] = useState<monument[]>()
+  const [cityObj, setCityObj] = useState<any>();
   console.log(id, city);
   const [loading, setloading] = useState<boolean>(true)
 
 
-  const fetchMonument = async() => {
+  const fetchMonument = async () => {
+    
     const monumentObj = await fetchGetAPI(`get/monument/${id}`);
     console.debug(monumentObj);
     setMonuments(monumentObj);
     setloading(false);
   }
+
+
+
+
+  const fetchCity = async () => {
+    const city = await fetchGetAPI(`get/cities/?id=${id}`)
+    console.debug(city,"Aaaaaaaaaaa");
+    setCityObj(city?.[0]);
+    setloading(false);
+  }
+
   useEffect(() => {
     setloading(true);
+    fetchCity();
     fetchMonument();
   }, [id])
   // const getUrl = (city: String) => {
@@ -49,6 +65,10 @@ const City = () => {
     // router.push(`place/${item.monument_name}/${item._id}`);
   }
 
+  const handleSeeAll = () => {
+    router.push(`city/galary/${id}`);
+  }
+
   const renderItem : ListRenderItem<monument> = ({ item }) => (
     <ThemedView style={styles.itemContainer}>
       <TouchableOpacity activeOpacity={0.7} style={styles.itemContainer} onPress={()=>handlePress({item})}>
@@ -57,7 +77,7 @@ const City = () => {
           <ThemedText lightColor='#666671' type="subtitle">{item.monument_name}</ThemedText>
           <ThemedText lightColor='#666' type="details">📍 {item.additional_details.location}</ThemedText>
           <ThemedText lightColor='#666' type="details">🕒 {item.additional_details.opening_hours}</ThemedText>
-          <ThemedText lightColor='#666' type="details">💵 ₹{item.additional_details.entry_fee}</ThemedText>
+          <ThemedText lightColor='#666' type="details">💵  {item.additional_details.entry_fee}</ThemedText>
         </ThemedView>
         </TouchableOpacity>
       <Divider/>
@@ -77,19 +97,37 @@ const City = () => {
   <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}>
         <ThemedView style={styles.container}>  
+  <ImageBackground
+  source={{ uri: cityObj?.image_url }}
+  style={{ width: "100%", height: 250 }}
+  imageStyle={{ resizeMode: 'fill' }}
+/>
+          <ThemedText style={{ alignSelf: "center" }} > {cityObj?.totalPlace} monuments </ThemedText>
+           <ExpandableText text={cityObj?.description} />
+            <ThemedView style={styles.subTitle}>
+            <ThemedText type="title">{cityObj?.city_name}</ThemedText>
+            </ThemedView>
+            <Divider/>
                 <ThemedView style={styles.subTitle}>
-            <ThemedText type="subtitle">Monuments</ThemedText>
+            <ThemedText type="subtitle">Popular Places of interest</ThemedText>
             </ThemedView>
            <Animated.ScrollView ref={scrollRef}
         contentContainerStyle={styles.list}
-      >
+          >
 
        <FlatList
-      data={monuments}
+              data={monuments}
+              horizontal={true}
       renderItem={renderItem}
       keyExtractor={item => item._id}
       contentContainerStyle={styles.list}
-    />
+            />
+            <TouchableOpacity  onPress={handleSeeAll} >
+              <ThemedText style={{alignSelf:"center"}} type="link"> 
+
+              See All
+              </ThemedText>
+            </TouchableOpacity>
         </Animated.ScrollView>  
       </ThemedView>
       </ParallaxScrollView>
@@ -117,6 +155,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 10,
+    marginHorizontal:10
   },
   image: {
     width: '100%',

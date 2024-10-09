@@ -26,8 +26,8 @@ const { id,title } = useLocalSearchParams();
   const fetchMonument = async () => {
     try {      
       const exibit = await fetchGetAPI(`get/exibit/${id}`);
-      console.debug(exibit,"monumvents",exibit,`get/exibit/${id}`);
-      setExbitis(exibit);
+      console.debug(exibit, "monumvents", exibit, `get/exibit/${id}`);
+      if (Array.isArray(exibit)) setExbitis(exibit);
       setloading(false);
     } catch (error) {
       console.error("error", "hello",error,`get/monuments/${id}`);
@@ -88,8 +88,9 @@ const { id,title } = useLocalSearchParams();
               <ThemedView>
                 <ThemedText type="link" >Exibits</ThemedText>
          
+                {console.log(exibits)}
             <FlatList
-              data={exibits.filter(exib=>exib.id.includes(searchQuery) || exib.title.toLowerCase().includes(searchQuery.toLowerCase()))}
+              data={exibits?.filter(exib=>exib?.id.includes(searchQuery) || exib?.title?.toLowerCase().includes(searchQuery.toLowerCase()))}
               horizontal={false}
               keyExtractor={(item) => item.id} // Assuming 'id' is a unique property
               showsHorizontalScrollIndicator={true}

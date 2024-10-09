@@ -3,12 +3,12 @@ import React, { useEffect, useState } from 'react'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { TabBarIcon } from '../navigation/TabBarIcon';
 const icon = ({ value }) => {
-    const [iconName, setIconName] = useState<string>("");
+
     useEffect(() => {
    
     },[value])
    
-    return <TabBarIcon name={iconName} color={'orange'}/>;
+    return <TabBarIcon name={value} color={'orange'}/>;
 }
 
 export default icon

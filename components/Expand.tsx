@@ -10,19 +10,24 @@ interface ExpandableTextProps {
 const ExpandableText: React.FC<ExpandableTextProps> = ({ text }) => {
     console.debug("descript", text);
   const [isExpanded, setIsExpanded] = useState(false);
-
+  
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
 
-  const displayText = isExpanded ? text : text.substring(0, 100) + '...';
+  const displayText = text?.length>100 ? isExpanded ? text : text?.substring(0, 100) || '' + '...' : text ;
   return (
     <ThemedView style={styles.container}>
       <ThemedText style={styles.text}>{displayText}</ThemedText>
       <TouchableOpacity onPress={toggleExpand}>
+      {  text?.length>100 ?
         <ThemedText type="link" style={{fontSize:12,margin:1}} >
           {isExpanded ? 'Show Less' : 'Show More'}
         </ThemedText>
+        :
+          <ThemedText>
+        </ThemedText>
+      }
       </TouchableOpacity>
     </ThemedView>
   );

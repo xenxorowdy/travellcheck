@@ -12,6 +12,8 @@ import Animated, { useAnimatedRef, useScrollViewOffset } from 'react-native-rean
 import { fetchGetAPI } from '@/api';
 import { useNavigation } from '@react-navigation/native';
 import { ArrowForwardIcon } from 'native-base';
+import HeaderImage from '@/components/commons/HeaderImage';
+import AccessCodeModal from '@/components/commons/AccessCodeModal';
 // import CityCarousel from '@/components/CityCarousel';
 interface LocationObject {
   temp: number;
@@ -46,7 +48,7 @@ export default function HomeScreen() {
   const [cuppon, setcuppon] = useState<boolean>(false);
   const [textCuppon,setText] = useState<String|null>('');
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [warning, setWarning] = useState<String | null>();
+  const [warning, setWarning] = useState<string>('');
   const [cities, setCities] = useState<cityInterface[]>([]);
     const colorScheme = useColorScheme() ?? 'light';
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
@@ -59,37 +61,37 @@ export default function HomeScreen() {
   }
 
   useEffect(() => {
-    const fetchLocation = async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
-        return;
-      }
+  //   const fetchLocation = async () => {
+  //     let { status } = await Location.requestForegroundPermissionsAsync();
+  //     if (status !== 'granted') {
+  //       setErrorMsg('Permission to access location was denied');
+  //       return;
+  //     }
 
-      const location = await Location.getCurrentPositionAsync({});
-      const lat = location.coords.latitude;
-      const lng = location.coords.longitude;
+  //     const location = await Location.getCurrentPositionAsync({});
+  //     const lat = location.coords.latitude;
+  //     const lng = location.coords.longitude;
 
-      const res = await fetch(`https://api.locationiq.com/v1/reverse.php?key=pk.bb9563dbec37f95deae150d32658e7ab&lat=${lat}&lon=${lng}&format=json`);
-      const data = await res.json();
+  //     const res = await fetch(`https://api.locationiq.com/v1/reverse.php?key=pk.bb9563dbec37f95deae150d32658e7ab&lat=${lat}&lon=${lng}&format=json`);
+  //     const data = await res.json();
 
-      const {city , neighbourhood,village ,country_code} = data.address
-      setCity((city || neighbourhood || village|| '') + ', ' + country_code.toUpperCase());
+  //     const {city , neighbourhood,village ,country_code} = data.address
+  //     setCity((city || neighbourhood || village|| '') + ', ' + country_code.toUpperCase());
 
-      const query = `?q=${lat},${lng}&key=${weatherApiKey}`;
-      const weatherUrl = openapi + query;
-      const weatherres = await fetch(weatherUrl)
-      const weatherdata = await weatherres.json();
-      const wea = weatherdata.current;
-      console.log(wea.condition.text);
-      setWeather({
-        temp: wea.temp_c,
-        icon: wea.condition.text
-      });
-    };
+  //     const query = `?q=${lat},${lng}&key=${weatherApiKey}`;
+  //     const weatherUrl = openapi + query;
+  //     const weatherres = await fetch(weatherUrl)
+  //     const weatherdata = await weatherres.json();
+  //     const wea = weatherdata.current;
+  //     console.log(wea.condition.text);
+  //     setWeather({
+  //       temp: wea.temp_c,
+  //       icon: wea.condition.text
+  //     });
+  //   };
     setLoading(true)
     fetchCities();
-    fetchLocation();
+    // fetchLocation();
   }, []);
 
 
@@ -133,12 +135,15 @@ export default function HomeScreen() {
     
   }
 
-  const handleCuppon = () => {
-    if (cuppons.some(cupp=>cupp===textCuppon)) {
+  const handleCuppon  = (text:string) :boolean =>  {
+    if (cuppons.some(cupp => cupp === text)) {
+      console.log("redirecting...")
       router.push("monument/66e8a63e74ad767f37358ac5")
+      return true;
     }
     else {
       setWarning("Cuppon code is not valid");
+      return false
     }
       
   }
@@ -150,19 +155,32 @@ export default function HomeScreen() {
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}>
-      <ThemedView style={{padding:16,gap:10}}>
-        <ThemedView style={styles.titleContainer}>
-          <ThemedText type="weather">{city}</ThemedText>
+         {/* <Image
+  source={require("@/assets/images/heading.png")}
+  alt="heading"
+  resizeMode="stretch"
+  style={{
+    width: "100%",
+    height: 80,
+    borderRadius: 20, // Adjust this value to achieve the desired roundness
+    overflow: "hidden",
+  }}
+/> */}
+<HeaderImage/>
+      <ThemedView style={{gap:10}}>
+
+
+          {/* <ThemedText type="weather">{city}</ThemedText>
           <ThemedView style={styles.weather} >
-            {/* <ThemedText type="weather">{weather?.icon}</ThemedText> */}
           <ThemedText type="weather">{weather?.temp}°C</ThemedText>
             <TabBarIcon name={getIconName(weather?.icon)} color={'orange'} size={20}/>
-          </ThemedView>
-          </ThemedView>
-          <ThemedText style={{alignSelf:"center"}} lightColor="#f17817" darkColor="#21DA8C" type="subtitle" >Explore the world your way</ThemedText>
-        <ThemedView style={{ flexDirection: "row", justifyContent: "space-around" }} >
+          </ThemedView> */}
+
+        
+          {/* <ThemedText style={{alignSelf:"center"}} lightColor="#f17817" darkColor="#21DA8C" type="subtitle" >Explore the world your way</ThemedText> */}
+        {/* <ThemedView style={{ flexDirection: "row", justifyContent: "space-around" }} > */}
             
-        <TextInput
+        {/* <TextInput
               placeholder='Have a access code?'
             onChangeText={setText}
              onSubmitEditing={({ nativeEvent }) => {
@@ -172,20 +190,23 @@ export default function HomeScreen() {
             style={{ width: "100%", height: 40 }} />
           <Pressable onPress={handleCuppon} style={{position:"absolute",right:5,alignSelf:"center"}} >
           <TabBarIcon name={"chevron-forward"} color={'orange'}  size={30}/>
-          </Pressable>
+          </Pressable> */}
         {/* <Button mode="contained-tonal" onPress={handleCuppon} > apply</Button> */}
-        </ThemedView>
+        {/* </ThemedView> */}
+        
         {/* {!cuppon?
         <Button mode="contained-tonal" style={styles.button} onPress={()=>setcuppon(!cuppon)} >Enter coupon code</Button>
           :
         } */}
-        <ThemedText type="error" >{warning}</ThemedText>
+       
              <Searchbar
-        theme={{ roundness: 3}}
+        theme={{ roundness: 2}}
       placeholder="Search city"
       onChangeText={setSearchQuery}
       value={searchQuery}
         />
+        <AccessCodeModal handleCuppon={handleCuppon} warning={warning}  />
+
       <ThemedView style={styles.subTitle}>
         <ThemedText type="subtitle">Popular Cities</ThemedText>
         <TouchableOpacity activeOpacity={0.5}>
@@ -197,7 +218,7 @@ export default function HomeScreen() {
           showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ flexGrow: 1,paddingLeft:16 }}>
         <FlatList
-          data={cities.filter(city => city.name?.toLowerCase().includes(searchQuery.toLowerCase()))}
+          data={cities.filter(city => city?.name?.toLowerCase()?.includes(searchQuery?.toLowerCase()))}
           keyExtractor={(item) => item.name.toString()}
           horizontal={true}
           ListEmptyComponent={
@@ -223,13 +244,16 @@ export default function HomeScreen() {
       </Animated.ScrollView>
       <Divider/>
       <ThemedView style={styles.titleContainer1} >
-
+        <TouchableOpacity onPress={() => router.push('/demo')}>
         <ThemedText type="defaultSemiBold" >Request Demo</ThemedText>
-      <ThemedText type="defaultSemiBold" >Become a partner</ThemedText>
+        </TouchableOpacity>
+
       </ThemedView >
       <ThemedView style={styles.titleContainer1} >
-      <ThemedText type="defaultSemiBold" >Enroll your monument</ThemedText>
+
+        <TouchableOpacity onPress={()=>router.push('/contact')}>
       <ThemedText type="defaultSemiBold" >Contact Us</ThemedText>
+        </TouchableOpacity>
       </ThemedView>
     </ParallaxScrollView>
   );

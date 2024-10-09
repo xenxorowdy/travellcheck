@@ -3,9 +3,9 @@ import type { ReactNode } from 'react';
 import type { TextProps, GestureResponderEvent } from 'react-native';
 
 export namespace ExpoRouter {
-  type StaticRoutes = `/` | `/(tabs)` | `/_sitemap` | `/explore`;
-  type DynamicRoutes<T extends string> = `/city/${SingleRoutePart<T>}/${SingleRoutePart<T>}` | `/exibt/${SingleRoutePart<T>}/${SingleRoutePart<T>}` | `/exibt/${SingleRoutePart<T>}/${SingleRoutePart<T>}/${SingleRoutePart<T>}` | `/monument/${SingleRoutePart<T>}` | `/place/${SingleRoutePart<T>}/${SingleRoutePart<T>}`;
-  type DynamicRouteTemplate = `/city/[id]/[city]` | `/exibt/[id]/[lang]/[title]` | `/exibt/[id]/[title]` | `/monument/[id]` | `/place/[title]/[id]`;
+  type StaticRoutes = `/` | `/(tabs)` | `/_sitemap` | `/contact` | `/demo` | `/explore`;
+  type DynamicRoutes<T extends string> = `/city/${SingleRoutePart<T>}/${SingleRoutePart<T>}` | `/city/galary/${SingleRoutePart<T>}` | `/contact_us/${SingleRoutePart<T>}` | `/direction/${SingleRoutePart<T>}` | `/exibt/${SingleRoutePart<T>}/${SingleRoutePart<T>}` | `/founders_gallery/${SingleRoutePart<T>}` | `/gallery/${SingleRoutePart<T>}` | `/map/${SingleRoutePart<T>}` | `/monument/${SingleRoutePart<T>}` | `/place/${SingleRoutePart<T>}/${SingleRoutePart<T>}` | `/support_us/${SingleRoutePart<T>}`;
+  type DynamicRouteTemplate = `/city/[id]/[city]` | `/city/galary/[cityId]` | `/contact_us/[id]` | `/direction/[id]` | `/exibt/[id]/[title]` | `/founders_gallery/[id]` | `/gallery/[id]` | `/map/[id]` | `/monument/[id]` | `/place/[title]/[id]` | `/support_us/[id]`;
 
   export type RelativePathString = `./${string}` | `../${string}` | '..';
   export type AbsoluteRoute = DynamicRouteTemplate | StaticRoutes;

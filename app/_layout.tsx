@@ -11,7 +11,7 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
-
+import React from 'react';
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
@@ -42,7 +42,7 @@ export default function RootLayout() {
       />
       <Stack.Screen
         name="city/[id]/[city]"
-        options={({ route, params }) => ({
+        options={({ route , params }) => ({
           headerTitle: decodeURIComponent(route.params?.city),
           headerTitleAlign: 'center',
           headerTitleStyle: {
@@ -51,11 +51,21 @@ export default function RootLayout() {
           },
 
         })}
+        />
+         <Stack.Screen
+          name="city/galary/[cityId]"
+          options={{
+            headerTitle: "Gallery",
+            headerTitleAlign: 'center',
+            headerTitleStyle: {
+              fontWeight: "700",
+            }
+          }}
    />
-      <Stack.Screen
+      <Stack.Screenf
         name="place/[title]/[id]"
         options={({ route }) => ({
-          headerTitle: "Exibits",
+          headerTitle: "Exhibits",
           headerTitleAlign: 'center',
         })
       }
@@ -68,7 +78,14 @@ export default function RootLayout() {
 
           })
         }
-      />
+        />
+        <Stack.Screen
+          name='place/[title]/[id]'
+          options={{
+            headerTitle: "Exhibits",
+            headerTitleAlign: 'center',
+          }}
+          />
       <Stack.Screen
         name="monument/[id]/index"
         options={{
