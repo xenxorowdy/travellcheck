@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "travellcheck",
-    "slug": "travellcheck",
+    "name": "the heritage tour",
+    "slug": "theheritagetour",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/designer.png",
+    "icon": "./assets/images/Logo-tht.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/designer.png",
+      "image": "./assets/images/Logo-tht.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -18,7 +18,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/designer.png",
+        "foregroundImage": "./assets/images/Logo-tht.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": [
