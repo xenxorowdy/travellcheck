@@ -35,9 +35,10 @@ const Gallery = () => {
         return <Loading/>
   }
   return (
-       <ParallaxScrollView
+    <ParallaxScrollView
+      safeView={false}
           headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}>
-          <ThemedText style={{ alignSelf: "center" }} type="subtitle" > All Place of interest ({monuments?.length})  </ThemedText>
+          <ThemedText style={{ alignSelf: "center",marginTop:10 }} type="subtitle" > All Place of interest ({monuments?.length})  </ThemedText>
         <ThemedView style={styles.row}>
               {monuments?.map((monument: any, idx: number) => (
             <TouchableOpacity style={styles.column} onPress={() => handlePress({ item: monument })} key={idx} >
@@ -60,20 +61,23 @@ const styles = StyleSheet.create({
          gap: 8,
     },
      row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+       flexDirection: 'row',
+       justifyContent:"space-evenly",
     marginBottom: 20,
-    flexWrap: 'wrap', 
+       flexWrap: 'wrap', 
+       padding: 10,
+    gap:10
   },
   column: {
-     width: '30%', // Adjust width for two columns layout
+     width: 170,
     alignItems: 'center',
     marginBottom: 20,
   },
   image: {
-    width: 130,
+    width: 160,
     height: 150,
     marginBottom: 10,
+    borderRadius:15
   },
   label: {
     fontSize: 16,

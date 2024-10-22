@@ -7,11 +7,7 @@ import { ThemedView } from '@/components/ThemedView'
 
 const Support = () => {
     return (
-        <ParallaxScrollView
-
-            headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-        >
-            <ThemedText style={commonStyles.textCenter} type="subtitle" >Support Us</ThemedText>
+        <ParallaxScrollView headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}>
             <ThemedText darkColor={"#009951"} lightColor="#009951" style={commonStyles.textCenter} type="catlogTitle"> Help us spread our love of art </ThemedText>
             <ThemedView style={commonStyles.container}>
 

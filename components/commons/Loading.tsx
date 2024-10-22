@@ -6,7 +6,7 @@ import { commonStyles } from './styled'
 const Loading = () => {
   return (
    <ThemedView style={commonStyles.container} >
-       <ThemedView style={{width:"100%",marginVertical:100}} >
+       <ThemedView style={{flex:1,position:"absolute",top:"45%",left:"50%"}} >
               <ActivityIndicator size="large"  />
               </ThemedView>
     </ThemedView>

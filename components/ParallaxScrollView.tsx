@@ -14,12 +14,14 @@ const HEADER_HEIGHT = 250;
 
 type Props = PropsWithChildren<{
   headerImage?: undefined | ReactElement;
+  safeView?: boolean;
   headerBackgroundColor: { dark: string; light: string };
 }>;
 
 export default function ParallaxScrollView({
   children,
   headerImage,
+  safeView,
   headerBackgroundColor,
 }: Props) {
   const colorScheme = useColorScheme() ?? 'light';
@@ -54,21 +56,30 @@ export default function ParallaxScrollView({
           ]}>
           {headerImage}
         </Animated.View> */}
-        
-          <SafeAreaView style={styles.container}>
+        {
+          safeView?
+          <SafeAreaView style={safeView && styles.container}>
         <ThemedView style={styles.content}>{children}</ThemedView>
           </SafeAreaView>
+            :
+        <ThemedView style={styles.content}>{children}</ThemedView>
+        }
+
+
       </Animated.ScrollView>
     </ThemedView>
   );
 }
+
+ParallaxScrollView.defaultProps = {
+  safeView: true,
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
   header: {
-    height: 250,
     overflow: 'hidden',
   },
   content: {

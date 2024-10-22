@@ -14,6 +14,7 @@ import { ThemedText } from '../ThemedText';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { ThemedView } from '../ThemedView';
 import { TabBarIcon } from '../navigation/TabBarIcon';
+import CusModal from './CusModal';
 type AccessCodeModalProps = {
   warning?: string;
   handleCuppon: (code : string) => boolean;
@@ -47,15 +48,21 @@ const color = useThemeColor({  }, "text");
   return (
     <View style={styles.container}>
 <TouchableOpacity onPress={openModal} >
-          <ThemedText style={{alignSelf:"center"}} type="link" > Have a access code? Clinc here</ThemedText>
-        </TouchableOpacity>
-      <Modal
-              animationType="slide"
-               
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
-          >
+          <ThemedText style={{alignSelf:"center"}} type="link" > Have an access code? Click here</ThemedText>
+      </TouchableOpacity>
+      <CusModal
+        modalVisible={modalVisible}
+        setModalVisible={modalVisible}
+        closeModal={closeModal}
+        setAccessCode={setAccessCode}
+        accessCode={accessCode}
+        warning={warning}
+        handleApply={handleApply}
+        color={color}
+        backgroundColor={color}
+        closeButtonColor={color}
+      />
+      {/* <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
         <View style={styles.centeredView}>
                   <ThemedView style={styles.modalView}  >
                       <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
@@ -76,7 +83,7 @@ const color = useThemeColor({  }, "text");
                       <Button title="Apply" onPress={handleApply} />
           </ThemedView>
         </View>
-      </Modal>
+      </Modal> */}
     </View>
   );
 };

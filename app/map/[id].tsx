@@ -26,7 +26,6 @@ const map = () => {
     }
   return (
       <ParallaxScrollView headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}  >
-          <ThemedText type="defaultSemiBold"> Map </ThemedText>
           <FlatList
             data={contact}
             keyExtractor={(_, index) => index.toString()}

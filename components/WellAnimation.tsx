@@ -6,8 +6,10 @@ import Animated, { Easing, useSharedValue, useAnimatedStyle, withSpring } from '
 import { ThemedText } from './ThemedText';
 
 const { height } = Dimensions.get('window');
-
-const WelcomeScreen: React.FC = () => {
+type props = {
+  title : string,
+}
+export function WelcomeScreen  ({title}: props)  {
   const animation = useSharedValue(0);
 
   // Define animated styles using the shared value
@@ -26,7 +28,7 @@ const WelcomeScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <Animated.View style={[styles.animatedContainer, animatedStyle]}>
-        <ThemedText type='title' style={styles.textTheme}>Welcome to the National Museum, Delhi!</ThemedText>
+        <ThemedText type='title' style={styles.textTheme}>Welcome to the {title}!</ThemedText>
       </Animated.View>
     </View>
   );

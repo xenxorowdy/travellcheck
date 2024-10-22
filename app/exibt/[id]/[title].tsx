@@ -5,11 +5,15 @@ import Dropdown from '@/components/Dropdown';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { exibit } from '@/utils';
+import { exibit, getData, language } from '@/utils';
 import { Image } from 'expo-image';
 import * as Speech from 'expo-speech';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import Animated from 'react-native-reanimated';
+import Loading from '@/components/commons/Loading';
+import { fetchGetAPI } from '@/api';
+import ParallaxScrollView from '@/components/ParallaxScrollView';
+import Speeh from '@/components/speeh';
 type catlo =  {
   _id?: string,
   monument_id?: string,
@@ -28,22 +32,42 @@ type catlo =  {
 
 const Exibit = () => {
     const { title,id,lang  } = useLocalSearchParams();
-    const [catlog, setCatlog] = useState<catlo | null>();
+    const [catalog, setCatalog] = useState<catlo | null>();
     const [lan, setLan] = useState<"en"| "hi"| "es"| "fr" >('en');
-    const [isSpeaking,setIsSpeaking] = useState(false);
-    console.log(title, exibit)
-    
-    useEffect(() => {
-        const exbt = exibit.find(ele => ele.title === title);
-        setCatlog(exbt);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-    }, [])
 
-console.log(lan)
+  const fetchExhibit = async()=> {
+    const res = await fetchGetAPI(`exibit?id=${id}`);
+    console.log(res, "exit1223", id);
+    if (res?.[0]) {
+      setCatalog(res[0]);
+      setLoading(false);
+    }
+  }
+  const fetchLan = async () => {
+    const lan = await getData(language);
+  
+    if (!lan) return;
+    setLan(lan);
+  }
+  useEffect(() => {
+    fetchLan();
+      fetchExhibit();
+        // const tempExhibit = exibit.find(ele => ele.title === title);
+        // if (tempExhibit) {
+        //     setCatalog(tempExhibit);
+        // }
+    }, [title]);
 
- const startSpeaking = () => {
+  if (loading) 
+      return <Loading/>
+
+  const startSpeaking = () => {
+    console.log('Start', catalog?.description?.[lan]);
     setIsSpeaking(true);
-     Speech.speak(catlog?.description?.[lan], {
+     Speech.speak(catalog?.description?.[lan], {
          language: lan,
          _voiceIndex: 3,
          pitch: 1.2,
@@ -56,30 +80,30 @@ console.log(lan)
     Speech.stop();
     setIsSpeaking(false);
   };
-    return (
-     <Animated.ScrollView
 
-            horizontal={false}
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ flexGrow: 1, gap: 10 }}
-            >
+  
+    return (
+      <ParallaxScrollView 
+        safeView={false}
+        headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}>
        <ThemedView>
 
-          <Image source={{ uri: catlog?.url }} style={{ width: "100%", height: 300, objectFit: 'scale-down', resizeMode: 'stretch' }} />
+          <Image source={{ uri: catalog?.url }} style={{ width: "100%", height: 300, objectFit: 'scale-down', resizeMode: 'stretch' }} />
         </ThemedView>
-        <ThemedView style={{height:100 ,flexDirection:"row",alignItems:"center",alignContent:"center",margin:1}}>
+        <ThemedView style={{ height: 100, flexDirection: "row", alignItems: "center", alignContent: "center", margin: 1 }}>
+       
           <ThemedView>
-          <TouchableOpacity onPress={isSpeaking ? stopSpeaking : startSpeaking} style={{ margin: 20 }}>
+          <TouchableOpacity  onPress={isSpeaking ? stopSpeaking : startSpeaking} style={{ margin: 20 ,flexDirection:"row",alignItems:"center",justifyContent:"center",alignSelf:"center",gap:10}}>
                 <TabBarIcon name={isSpeaking ? 'pause' : 'play'} color={"orange"}  size={30}/>
-      </TouchableOpacity>
+            <ThemedText type="weather">{isSpeaking ? 'pause' : 'play'}</ThemedText>
+            </TouchableOpacity>
           </ThemedView>
-          <Dropdown lan={lan} setLan={setLan} />
+
         </ThemedView>
         <ThemedView style={{margin:10}}>
-          <ThemedText  > {catlog?.description?.[lan]} </ThemedText>
+          <ThemedText  > {catalog?.description?.[lan]} </ThemedText>
         </ThemedView>
-    </Animated.ScrollView>
+        </ParallaxScrollView>
   )
 }
 

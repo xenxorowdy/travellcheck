@@ -8,10 +8,10 @@ type files = {
     lan : string
 }
 const Speeh: React.FC<files> = ({ file, lan }) => {
-    console.debug(file,lan);
     const [isSpeaking, setIsSpeaking] = useState(false);
     
-     const startSpeaking = () => {
+  const startSpeaking = () => {
+    console.debug("Speeh", file[lan], lan);
     setIsSpeaking(true);
      Speech.speak(file, {
          language: lan,

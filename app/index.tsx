@@ -3,7 +3,7 @@ import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText, ThemedTextProps } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { openapi, weatherApiKey } from '@/utils';
+import { cuppons, openapi, storeData, weatherApiKey } from '@/utils';
 import * as Location from 'expo-location';
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
@@ -37,7 +37,7 @@ type cityInterface = {
 }
 
 
-const cuppons =   ["ALKIDoQ","H6C6Pp2","oQi9Y14","WXNjRZP","AhwAZxH"]
+
 
 export default function HomeScreen() {
   const [location, setLocation] = useState<null | LocationObject >(null);
@@ -56,6 +56,7 @@ export default function HomeScreen() {
 
   const fetchCities = async () => {
     const cityObj = await fetchGetAPI("get/cities");
+    console.log("fetch cities",cityObj);
     setCities(cityObj);
     setLoading(false);
   }
@@ -134,10 +135,17 @@ export default function HomeScreen() {
   const handleCode = () => {
     
   }
-
+  const cityaa = () => {
+    try {
+      return cities?.filter(city => city?.name?.toLowerCase()?.includes(searchQuery?.toLowerCase()))
+    } catch (error) {
+      return[];
+    }
+  }
   const handleCuppon  = (text:string) :boolean =>  {
     if (cuppons.some(cupp => cupp === text)) {
       console.log("redirecting...")
+      storeData("key", "cupponDone")
       router.push("monument/66e8a63e74ad767f37358ac5")
       return true;
     }
@@ -218,7 +226,7 @@ export default function HomeScreen() {
           showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ flexGrow: 1,paddingLeft:16 }}>
         <FlatList
-          data={cities.filter(city => city?.name?.toLowerCase()?.includes(searchQuery?.toLowerCase()))}
+          data={cityaa()}
           keyExtractor={(item) => item.name.toString()}
           horizontal={true}
           ListEmptyComponent={

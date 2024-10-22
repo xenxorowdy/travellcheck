@@ -28,13 +28,15 @@ const Gallery = () => {
     return <Loading/>
   }
   return (
-       <ParallaxScrollView
-          headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}>
-          <ThemedText style={{ alignSelf: "center" }} type="subtitle" > Image Gallery  </ThemedText>
+    <ParallaxScrollView
+      safeView={false}
+      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}>
+      <ThemedView style={styles.container}>
         <ThemedView style={styles.row}>
               {galleryData?.map((gallery: any, idx: number) => (
         <Image key={idx} source={gallery.image} style={styles.image} />
         ))}
+      </ThemedView>
       </ThemedView>
           </ParallaxScrollView>
   )
@@ -44,12 +46,13 @@ export default Gallery
 
 const styles = StyleSheet.create({
    container: {
-        flex: 1,
-         gap: 8,
+      flex: 1,
+      gap: 8,
+      padding:10
     },
      row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+       flexDirection: 'row',
+       gap: 15,
     marginBottom: 20,
     flexWrap: 'wrap', 
   },
@@ -59,9 +62,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   image: {
-    width: 130,
+    width: 110,
     height: 150,
     marginBottom: 10,
+    borderRadius:10
   },
   label: {
     fontSize: 16,

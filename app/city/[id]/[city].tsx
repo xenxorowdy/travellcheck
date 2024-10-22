@@ -3,6 +3,7 @@ import ExpandableText from '@/components/Expand'
 import ParallaxScrollView from '@/components/ParallaxScrollView'
 import { ThemedText } from '@/components/ThemedText'
 import { ThemedView } from '@/components/ThemedView'
+import { storeData } from '@/utils'
 import { Image } from 'expo-image'
 import { router, useLocalSearchParams } from 'expo-router'
 import { Divider, FlatList, NativeBaseProvider } from 'native-base'
@@ -61,6 +62,7 @@ const City = () => {
   // }
 
   const handlePress: (event: { item: monument }) => void = ({ item }) => {
+    storeData("key", "");
     router.push(`monument/${item._id}`);
     // router.push(`place/${item.monument_name}/${item._id}`);
   }
@@ -71,7 +73,7 @@ const City = () => {
 
   const renderItem : ListRenderItem<monument> = ({ item }) => (
     <ThemedView style={styles.itemContainer}>
-      <TouchableOpacity activeOpacity={0.7} style={styles.itemContainer} onPress={()=>handlePress({item})}>
+      <TouchableOpacity activeOpacity={0.7}  onPress={()=>handlePress({item})}>
         <Image source={{ uri: item.image_url }} style={styles.image} />
         <ThemedView style={styles.textContainer}>
           <ThemedText lightColor='#666671' type="subtitle">{item.monument_name}</ThemedText>
@@ -118,6 +120,8 @@ const City = () => {
        <FlatList
               data={monuments}
               horizontal={true}
+              showsHorizontalScrollIndicator={false}
+
       renderItem={renderItem}
       keyExtractor={item => item._id}
       contentContainerStyle={styles.list}

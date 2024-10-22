@@ -3,7 +3,7 @@ import { TabBarIcon } from '@/components/navigation/TabBarIcon'
 import { ThemedText } from '@/components/ThemedText'
 import { ThemedView } from '@/components/ThemedView'
 import WelcomeScreen from '@/components/WellAnimation'
-import { exibit } from '@/utils'
+import { exibit, getData, getDataType, language } from '@/utils'
 import { FontAwesome } from '@expo/vector-icons'
 import { Image } from 'expo-image'
 import { router, useLocalSearchParams } from 'expo-router'
@@ -13,41 +13,58 @@ import { Divider, Searchbar } from 'react-native-paper'
 import * as Speech from 'expo-speech';
 import Animated, { useAnimatedRef } from 'react-native-reanimated'
 import Speeh from '@/components/speeh'
+import { lanType } from '@/app/monument/[id]'
 
 
 const City = () => {
-const { id,title } = useLocalSearchParams();
+  const { id, title } = useLocalSearchParams();
+  const [lan, setLan] = useState<lanType>('en');
     const [welcome, setWelcome] = useState<boolean>(true)
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
-  const [loading, setloading] = useState(false);
-  const [exibits, setExbitis] = useState<[]>([])
+  const [loading, setLoading] = useState(false);
+  const [exibits, setExbitis] = useState<any[]>([])
   const [isSpeaking,setIsSpeaking] = useState(false);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const fetchMonument = async () => {
     try {      
       const exibit = await fetchGetAPI(`get/exibit/${id}`);
-      console.debug(exibit, "monumvents", exibit, `get/exibit/${id}`);
-      if (Array.isArray(exibit)) setExbitis(exibit);
-      setloading(false);
+      console.debug(exibit, "monumvents", `get/exibit/${id}`);
+      if (Array.isArray(exibit)) {
+        const key = await getDataType('paid');
+        if (key === 'free' || key === undefined || key === undefined) {
+          const _exibit = exibit.filter(exi => exi.type === 'free');
+          setExbitis(_exibit);
+        }
+        else {
+          setExbitis(exibit);
+        }
+      }
+      setLoading(false);
     } catch (error) {
       console.error("error", "hello",error,`get/monuments/${id}`);
     }
   }
   useEffect(() => {
-    setloading(true);
+    setLoading(true);
     fetchMonument();
   }, [id])
+  const fetchLan = async () => {
+    const lan = await getData(language);
+    console.debug(lan, "lan");
+    if (!lan) return;
+    setLan(lan);
+  }
   useEffect(() => {
-
+    fetchLan()
     setTimeout(()=>setWelcome(false),2000)
   }, [])
+
    const startSpeaking = () => {
     setIsSpeaking(true);
      Speech.speak(exibits?.description?.[lan], {
          language: lan,
          _voiceIndex: 3,
-         pitch: 1.2,
-         quality: "Enhanced",
+       pitch: 1.2,
       onDone: () => setIsSpeaking(false),
     });
   };
@@ -64,7 +81,7 @@ const { id,title } = useLocalSearchParams();
   return (
  <ThemedView style={styles.container}>
       {welcome ? (
-        <WelcomeScreen />
+        <WelcomeScreen title={title} />
       ) : (
         <ThemedView>
           <Animated.ScrollView
@@ -88,7 +105,6 @@ const { id,title } = useLocalSearchParams();
               <ThemedView>
                 <ThemedText type="link" >Exibits</ThemedText>
          
-                {console.log(exibits)}
             <FlatList
               data={exibits?.filter(exib=>exib?.id.includes(searchQuery) || exib?.title?.toLowerCase().includes(searchQuery.toLowerCase()))}
               horizontal={false}
@@ -99,7 +115,6 @@ const { id,title } = useLocalSearchParams();
                   <TouchableOpacity
                     activeOpacity={0.75}
                   onPress={() => {
-                    console.debug(`/exibt/${item._id}/${item.title}`);
                     router.push(`/exibt/${item._id}/${item.title}`)
                   }
                   } // Adjust to pass the correct ID
@@ -108,7 +123,7 @@ const { id,title } = useLocalSearchParams();
                   <ThemedView style={{ width: width - 20, marginVertical: 0, borderRadius: 6, backgroundColor: "#777499", padding: 6, paddingHorizontal: 8, justifyContent: "space-between", marginTop: 10, display: "flex", flexWrap: "nowrap",flexDirection:"row" }}>
                     <ThemedText lineBreakMode="clip" numberOfLines={1} style={{width:"60%"}} >{item.id} {item?.title}</ThemedText>
                     <ThemedText>Info</ThemedText>
-                <Speeh file={item?.description?.[title]} lan={title} />
+                <Speeh file={item?.description} lan={lan} />
                 </ThemedView>
                   </TouchableOpacity>
               )}

@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Platform } from "react-native";
 
 export const isIos = Platform.OS === "ios";
@@ -218,3 +219,52 @@ export const  cities = [
       "best_travel_place": "Christ the Redeemer"
     }
 ]
+
+export const storeData = async (key:string, value:string) : Promise<boolean>  =>  {
+  try {
+      await AsyncStorage.setItem(key, value);
+      return true;
+  } catch (e) {
+      // saving error
+      return false;
+  }
+};
+
+
+export const getData = async (key: string): Promise<"en" | "hi" | "es" | "fr" | null> => {
+  try {
+    const value = await AsyncStorage.getItem(key);
+    if (value !== null) {
+      return value as "en" | "hi" | "es" | "fr"; // Type assertion
+    }
+    return null; // Return null if no value found
+  } catch (e) {
+    console.error("Error reading value", e);
+    return null; // Return null in case of error
+  }
+};
+export const getDataType = async (key: string): Promise<string> => {
+  try {
+    const value = await AsyncStorage.getItem(key);
+    if (value !== null) {
+      return value; // Type assertion
+    }
+    return null; // Return null if no value found
+  } catch (e) {
+    console.error("Error reading value", e);
+    return null; // Return null in case of error
+  }
+};
+
+export const mapping = {
+    "IMAGE_GALLERY": "Image Gallery",
+    FOUNDERS_GALLERY: "Founders Gallery",
+    "OUR_MAP": "Our Map",
+    "CONTACT_US": "Contact Us",
+    "DIRECTION": "Direction",
+    "SUPPORT_US": "Support Us"
+}
+
+export const language = 'language';
+
+export const cuppons =   ["ALKIDoQ","H6C6Pp2","oQi9Y14","WXNjRZP","AhwAZxH"]
